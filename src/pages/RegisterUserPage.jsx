@@ -1,5 +1,5 @@
 import React from 'react'
-import { errorAlert } from '../utils/alert';
+import { successAlert, errorAlert } from '../utils/alert';
 
 function RegisterUserPage() {
   const name = React.useRef();
@@ -8,7 +8,7 @@ function RegisterUserPage() {
   const username = React.useRef();
   const password = React.useRef();
 
-  const handleSubmit = (ev) => {
+  const handleSubmit = async (ev) => {
     ev.preventDefault()
 
     const nameVal = name.current.value;
@@ -17,29 +17,24 @@ function RegisterUserPage() {
     const usernameVal = username.current.value;
     const passwordVal = password.current.value;
 
-    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    const usernameRegex = /^[A-Za-z][A-Za-z0-9_]{7,29}$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    
-    if (nameVal.length < 2 || nameVal.length > 30) {
-      errorAlert('name length should be greater than 1 and less than equals to 30 characters')
-      return
-    }
-    if (phoneVal.length < 10 || phoneVal.length > 10) {
-      errorAlert('Invalid Phone Number')
-      return
-    }
-    if ( !emailRegex.test(emailVal) ) {
-      errorAlert('Invalid Email')
-      return
-    }
-    if ( !usernameRegex.test(usernameVal)) {
-      errorAlert('Invaid username! It should have only a-z A-Z 0-9 _ characters and should have 8-30 characters')
-      return
-    }
-    if ( !passwordRegex.test(passwordVal)) {
-      errorAlert('Invalid Password! Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:')
-      return
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/auth/register`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: nameVal,
+        phone: phoneVal,
+        email: emailVal,
+        username: usernameVal,
+        password: passwordVal
+      })
+    })
+    const data = await response.json();
+    if(response.ok) {
+      successAlert('User Created ✨');
+    } else {
+      errorAlert(data.error);
     }
   }
 
