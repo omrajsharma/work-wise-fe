@@ -1,9 +1,11 @@
 import React from 'react'
 import { successAlert, errorAlert } from '../utils/alert';
 import { UserContext } from '../context/UserContextProvider';
+import { Navigate } from 'react-router-dom';
 
 function LoginUserPage() {
   const {userInfo, setUserInfo} = React.useContext(UserContext);
+  const [redirectToHome, setRedirectToHome] = React.useState(false);
   const username = React.useRef();
   const password = React.useRef();
 
@@ -27,10 +29,15 @@ function LoginUserPage() {
     console.log(data);
     if (response.ok) {
       successAlert(data.success);
-      setUserInfo(data.data)
+      setUserInfo(data.data);
+      setRedirectToHome(true);
     } else {
       errorAlert(data.error);
     }
+  }
+
+  if (redirectToHome) {
+    return <Navigate to='/' />
   }
 
   return (
