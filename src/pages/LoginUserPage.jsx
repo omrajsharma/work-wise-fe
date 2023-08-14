@@ -1,7 +1,9 @@
 import React from 'react'
 import { successAlert, errorAlert } from '../utils/alert';
+import { UserContext } from '../context/UserContextProvider';
 
 function LoginUserPage() {
+  const {userInfo, setUserInfo} = React.useContext(UserContext);
   const username = React.useRef();
   const password = React.useRef();
 
@@ -25,6 +27,7 @@ function LoginUserPage() {
     console.log(data);
     if (response.ok) {
       successAlert(data.success);
+      setUserInfo(data.data)
     } else {
       errorAlert(data.error);
     }
