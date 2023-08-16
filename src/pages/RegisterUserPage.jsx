@@ -1,7 +1,10 @@
 import React from 'react'
 import { successAlert, errorAlert } from '../utils/alert';
+import { Navigate } from 'react-router-dom';
 
 function RegisterUserPage() {
+  const [redirectToLogin, setRedirectToLogin] = React.useState(false);
+
   const name = React.useRef();
   const phone = React.useRef();
   const email = React.useRef();
@@ -33,9 +36,14 @@ function RegisterUserPage() {
     const data = await response.json();
     if(response.ok) {
       successAlert('User Created ✨');
+      setRedirectToLogin(true);
     } else {
       errorAlert(data.error);
     }
+  }
+
+  if (redirectToLogin) {
+    return <Navigate to='/login' />
   }
 
   return (
