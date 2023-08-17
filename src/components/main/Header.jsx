@@ -39,7 +39,7 @@ function Header() {
           <div className="header-login">
             { userInfo ?
               (<>
-                <Link to='/create'>Post A Job</Link>
+                <Link to='/create-job'>Post A Job</Link>
                 <Link onClick={logout}>Logout</Link>
               </>) 
               :(<>
