@@ -6,6 +6,7 @@ import LoginUserPage from './pages/LoginUserPage'
 import RegisterUserPage from './pages/RegisterUserPage'
 import UserProfilePage from './pages/UserProfilePage'
 import MainLayout from './layouts/MainLayout'
+import JobCreatePage from './pages/JobCreatePage'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path='/login' element={<LoginUserPage />} />
         <Route path='/register' element={<RegisterUserPage />} />
         <Route path='/profile' element={<UserProfilePage />} />
+        <Route path='/create-job' element={<JobCreatePage />} />
       </Route>
     </Routes>
   )
