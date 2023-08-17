@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import Logo from '../../assets/owl-transparent.png'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../../context/UserContextProvider'
+import { successAlert } from '../../utils/alert'
 
 function Header() {
   const {userInfo, setUserInfo} = React.useContext(UserContext);
@@ -13,6 +14,17 @@ function Header() {
     .then(response => response.json())
     .then(data => setUserInfo(data.data))
   }, [])
+
+  const logout = async () => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/auth/logout`, {
+      credentials: 'include'
+    })
+    const data = await response.json();
+    if (response.ok) {
+      successAlert(data.success);
+    }
+    setUserInfo({});
+  }
 
   return (
     <header>
@@ -28,7 +40,7 @@ function Header() {
             { userInfo ?
               (<>
                 <Link to='/create'>Post A Job</Link>
-                <Link to='/logout'>Logout</Link>
+                <Link onClick={logout}>Logout</Link>
               </>) 
               :(<>
                 <Link to='/login'>Login</Link>
